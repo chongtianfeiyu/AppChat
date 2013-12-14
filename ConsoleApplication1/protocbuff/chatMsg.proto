@@ -1,0 +1,36 @@
+package protocol;
+
+//////////////////////////////////////////////////////////////
+// ID 1 - 5000
+
+enum XY_ID
+{
+    MIN_XY_ID = 10000;
+
+    XYID_LOGIN              = 10001;
+    XYID_DIALOG             = 10002;
+	XYID_HEART				= 10003;
+
+    MAX_XY_ID = 15000;
+}
+
+
+/////////////////////////////////////////////////////////////
+message loginServer
+{
+   optional XY_ID XYID          = 1 [default = XYID_LOGIN];
+   optional string userID		= 2;    //登录名
+}
+
+//聊天内容
+message dialogMsg
+{
+    optional XY_ID XYID         = 1 [default = XYID_DIALOG];
+    optional string dialogStr   = 2;    //聊天内容
+}
+
+//心跳包
+message heartCmd
+{
+	optional XY_ID XYID			= 1 [default = XYID_HEART];
+}
