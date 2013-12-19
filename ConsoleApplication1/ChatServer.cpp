@@ -1,4 +1,4 @@
-﻿#include "ChatServer.h"
+#include "ChatServer.h"
 #include "NetResponse.h"
 #include "SERVER_IO.h"
 #include "ClientSession.h"

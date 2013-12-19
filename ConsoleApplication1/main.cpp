@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <boost/smart_ptr.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/buffered_stream.hpp>
@@ -10,7 +10,6 @@
 
 #include "protocbuff/chatMsg.pb.h"
 #include "ChatServer.h"
-
 #include "ClassFactory.h"
 
 using std::cout;
@@ -39,12 +38,9 @@ ChatServer chatServer;
 int main(int argc,char* argv[])
 {
 	cout << "chat server start." << endl;
-
 	chatServer.start();
-
 	//接收到数据包处理线程
 	//thread serializeThread(boost::bind(&ChatServer::threadSerializedBody,&chatServer));
-
 	globalIoSvr.run();
     return 0;
 }

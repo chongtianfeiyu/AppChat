@@ -29,7 +29,8 @@ ClientSession::~ClientSession(void)
 //获取客户端的连接ip
 string& ClientSession::getIp()
 {
-	return mSocket.remote_endpoint().address().to_string();
+    string ipAddress = mSocket.remote_endpoint().address().to_string();
+	return ipAddress;
 }
 
 
@@ -107,7 +108,7 @@ void ClientSession::receiverHandler(const boost::system::error_code& error,char*
 		strcpy(bodyContent,headBuff);
 
 		//包头
-		nshead_t nsHead = {body_len - OFF_SET,body_id,bodyContent,this};
+		nshead_t nsHead = {static_cast<unsigned short>(body_len - OFF_SET),body_id,bodyContent,this};
 
 		//收到数据后多态处理
 		chatServer.appendToSerializeList(nsHead);
