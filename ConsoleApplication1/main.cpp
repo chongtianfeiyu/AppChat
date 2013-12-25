@@ -19,7 +19,6 @@ using namespace boost;
 using namespace google::protobuf::io;
 using namespace classFactory;
 
-
 //端口号
 short domainPort = 8100;
 
@@ -34,6 +33,9 @@ boost::asio::ip::tcp::acceptor svrAccept(globalIoSvr,endPoint);
 
 //聊天服务
 ChatServer chatServer;
+
+//是否是调试模式
+bool APP_IS_DEBUG = true;
 
 int main(int argc,char* argv[])
 {

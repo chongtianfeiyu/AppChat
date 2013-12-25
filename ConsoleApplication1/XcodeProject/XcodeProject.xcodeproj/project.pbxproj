@@ -14,6 +14,8 @@
 		5C068B26180D92F4006FB144 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C068B25180D92F4006FB144 /* main.cpp */; };
 		5C068B29180D93F2006FB144 /* libboost_system-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C068B27180D93F2006FB144 /* libboost_system-mt.a */; };
 		5C068B2A180D93F2006FB144 /* libboost_thread-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C068B28180D93F2006FB144 /* libboost_thread-mt.a */; };
+		5C9069891868906400949FFA /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C9069871868906400949FFA /* Utils.cpp */; };
+		5C90698B18689C8500949FFA /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C90698A18689C8500949FFA /* libiconv.a */; };
 		5CFBF26E18634ACE0077F10B /* Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5CFBF26518634ACE0077F10B /* Factory.cpp */; };
 		5CFBF26F18634ACE0077F10B /* NetResponse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5CFBF26718634ACE0077F10B /* NetResponse.cpp */; };
 		5CFBF27018634ACE0077F10B /* SerializeMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5CFBF26918634ACE0077F10B /* SerializeMgr.cpp */; };
@@ -52,6 +54,9 @@
 		5C068B28180D93F2006FB144 /* libboost_thread-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_thread-mt.a"; path = "../../../../../../../../opt/local/lib/libboost_thread-mt.a"; sourceTree = "<group>"; };
 		5C068B2B180D9721006FB144 /* libprotobuf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotobuf.a; path = ../../../../../../../../opt/local/lib/libprotobuf.a; sourceTree = "<group>"; };
 		5C068B2C180D9721006FB144 /* libprotoc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotoc.a; path = ../../../../../../../../opt/local/lib/libprotoc.a; sourceTree = "<group>"; };
+		5C9069871868906400949FFA /* Utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Utils.cpp; path = ../Utils.cpp; sourceTree = "<group>"; };
+		5C9069881868906400949FFA /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = ../Utils.h; sourceTree = "<group>"; };
+		5C90698A18689C8500949FFA /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = ../../../../../../../../opt/local/lib/libiconv.a; sourceTree = "<group>"; };
 		5CFBF26518634ACE0077F10B /* Factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Factory.cpp; path = ../Factory.cpp; sourceTree = "<group>"; };
 		5CFBF26618634ACE0077F10B /* Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Factory.h; path = ../Factory.h; sourceTree = "<group>"; };
 		5CFBF26718634ACE0077F10B /* NetResponse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NetResponse.cpp; path = ../NetResponse.cpp; sourceTree = "<group>"; };
@@ -69,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C90698B18689C8500949FFA /* libiconv.a in Frameworks */,
 				5CFBF27918634CE90077F10B /* libprotobuf-lite.a in Frameworks */,
 				5CFBF27618634CE90077F10B /* libprotobuf.a in Frameworks */,
 				5CFBF27718634CE90077F10B /* libprotoc.a in Frameworks */,
@@ -84,8 +90,15 @@
 		5C068B02180D9298006FB144 = {
 			isa = PBXGroup;
 			children = (
+				5C90698A18689C8500949FFA /* libiconv.a */,
+				5C9069871868906400949FFA /* Utils.cpp */,
+				5C9069881868906400949FFA /* Utils.h */,
 				5CFBF27818634CE90077F10B /* libprotobuf-lite.a */,
 				5CFBF27418634C9E0077F10B /* libboost_timer-mt.a */,
+				5C068B2B180D9721006FB144 /* libprotobuf.a */,
+				5C068B2C180D9721006FB144 /* libprotoc.a */,
+				5C068B27180D93F2006FB144 /* libboost_system-mt.a */,
+				5C068B28180D93F2006FB144 /* libboost_thread-mt.a */,
 				5CFBF26518634ACE0077F10B /* Factory.cpp */,
 				5CFBF26618634ACE0077F10B /* Factory.h */,
 				5CFBF26718634ACE0077F10B /* NetResponse.cpp */,
@@ -94,10 +107,6 @@
 				5CFBF26A18634ACE0077F10B /* SerializeMgr.h */,
 				5CFBF26B18634ACE0077F10B /* SERVER_IO.h */,
 				5CFBF26C18634ACE0077F10B /* UTF_8CPP.cpp */,
-				5C068B2B180D9721006FB144 /* libprotobuf.a */,
-				5C068B2C180D9721006FB144 /* libprotoc.a */,
-				5C068B27180D93F2006FB144 /* libboost_system-mt.a */,
-				5C068B28180D93F2006FB144 /* libboost_thread-mt.a */,
 				5C068B25180D92F4006FB144 /* main.cpp */,
 				5C068B1A180D92C0006FB144 /* ChatServer.cpp */,
 				5C068B1B180D92C0006FB144 /* ChatServer.h */,
@@ -195,6 +204,7 @@
 				5CFBF26F18634ACE0077F10B /* NetResponse.cpp in Sources */,
 				5CFBF27018634ACE0077F10B /* SerializeMgr.cpp in Sources */,
 				5CFBF27118634ACE0077F10B /* UTF_8CPP.cpp in Sources */,
+				5C9069891868906400949FFA /* Utils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,5 +15,6 @@ extern short domainPort;
 extern boost::asio::io_service globalIoSvr;
 extern boost::asio::ip::tcp::endpoint endPoint;
 extern boost::asio::ip::tcp::acceptor svrAccept;
-
+//是否是调试模式
+extern bool APP_IS_DEBUG;
 #endif

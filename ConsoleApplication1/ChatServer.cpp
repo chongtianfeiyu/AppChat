@@ -23,10 +23,14 @@ void ChatServer::start()
 {
 	beginAccept();
 
-	//开始心跳计时
-	tm.expires_from_now(boost::posix_time::seconds(5));
-	tm.async_wait(boost::bind(&ChatServer::intervalHandler,this,boost::asio::placeholders::error));
-	//time_io_service.run();
+    if(!APP_IS_DEBUG)
+    {
+        //开始心跳计时
+        tm.expires_from_now(boost::posix_time::seconds(5));
+        tm.async_wait(boost::bind(&ChatServer::intervalHandler,this,boost::asio::placeholders::error));
+        
+        time_io_service.run();
+    }
 }
 
 //停止聊天服务
@@ -41,9 +45,12 @@ void ChatServer::stop()
 	}
 	sessionList.clear();
 
-	//停止心跳计时
-	tm.cancel();
-	time_io_service.stop();
+    if(!APP_IS_DEBUG)
+    {
+        //停止心跳计时
+        tm.cancel();
+        time_io_service.stop();
+    }
 
 }
 
@@ -113,6 +120,8 @@ void ChatServer::intervalHandler(const boost::system::error_code& error)
 			}
 		}
 	}
+    
+    cout << "run heart hand" << endl;
 
 	//每隔5秒回调一次
 	tm.expires_from_now(boost::posix_time::seconds(5));
@@ -151,9 +160,7 @@ bool ChatServer::disableSession(const string& sid)
 			tmp_ptr->disconnect();
 			//从会话列表中剔除
 			it = sessionList.erase(it);
-
 			return true;
-
 		}
 		else
 		{
