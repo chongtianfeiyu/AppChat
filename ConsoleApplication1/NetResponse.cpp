@@ -17,32 +17,23 @@ CodeConvert gb2312ToUtf8("gb2312","utf-8");
 void response::loginServer_response(nshead_t& nshead)
 {
 	protocol::loginServer* logSvr = new protocol::loginServer();
-	logSvr->ParseFromArray(nshead.body_content,nshead.body_len);
+    
+    char buffs[MAX_NET_LEN];
+    memset(buffs,'\0',MAX_NET_LEN);
+    strcpy(buffs,nshead.body_content);
+    
+	logSvr->ParseFromArray(buffs,MAX_NET_LEN);
+    const string& userID = logSvr->userid();
+    
+    cout << "userID is " << userID << endl;
+    
+    ClientSession* pSession = (ClientSession*)nshead.clientSession;
+    
+    if(chatServer.validateExistSession(userID))
+	{
+		//把原来的连接挤下线
+		chatServer.disableSession(userID);
+	}
+	((ClientSession*)nshead.clientSession)->sessionID = logSvr->userid();
 
-    char userIDOut[256];
-    memset(&userIDOut,'\0',sizeof(userIDOut));
-    
-    char tempUserID[256];
-    memset(&tempUserID,'\0',sizeof(tempUserID));
-    
-    strcpy(tempUserID,logSvr->userid().c_str());
-    
-    utf8ToGb2312.convert(tempUserID,sizeof(tempUserID) + 1,userIDOut,sizeof(userIDOut));
-    
-    cout << "gb2312 -> :" << userIDOut << endl;
-    //cout << "old -> : " << logSvr->userid() << endl;
-    
-	//const string userID = logSvr->userid();
-    
-    //utf8ToGb2312.convert(userID.c_str(),strlen(userID.c_str()),userIDOut,sizeof(userIDOut));
-
-	
-//    if(chatServer.validateExistSession(userID))
-//	{
-//		//把原来的连接挤下线
-//		chatServer.disableSession(userID);
-//	}
-//
-//	((ClientSession*)nshead.clientSession)->sessionID = logSvr->userid();
-//
 }
