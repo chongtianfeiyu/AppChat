@@ -20,6 +20,9 @@ namespace response
 
 	//登录聊天后处理
 	void loginServer_response(nshead_t& nshead);
+    
+    //接收到聊天内容处理
+    void chat_progress(nshead_t& nshead);
 
 }
 #endif

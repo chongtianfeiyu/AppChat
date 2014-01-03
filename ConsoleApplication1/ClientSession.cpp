@@ -60,11 +60,6 @@ bool ClientSession::isOpen()
 	return mSocket.is_open();
 }
 
-//发送数信息
-void ClientSession::sendMsg()
-{
-}
-
 
 //监听接收socket的数据信息
 void ClientSession::receiverMsg()
@@ -78,14 +73,14 @@ void ClientSession::receiverMsg()
 //
 void ClientSession::receiverHandler(const boost::system::error_code& error,char* headBuff)
 {
-	//if(error)
-	//{
-	//	//收到异常处理
-	//	cout << "receiver error: " << error.message() << endl;
-	//	//接收下条数据
-	//	receiverMsg();
-	//	return;
-	//}
+	if(error)
+	{
+		//收到异常处理
+		cout << "receiver error: " << error.message() << endl;
+		//接收下条数据
+		//receiverMsg();
+		return;
+	}
 
 	//包长
 	short body_len = *(unsigned short*)headBuff;
@@ -102,13 +97,12 @@ void ClientSession::receiverHandler(const boost::system::error_code& error,char*
 	}
 	else
 	{
-
 		char bodyContent[MAX_NET_LEN];
 		memset(bodyContent,'\0',sizeof(bodyContent));
 		strcpy(bodyContent,headBuff);
 
 		//包头
-		nshead_t nsHead = {static_cast<unsigned short>(body_len - OFF_SET),body_id,bodyContent,this};
+		nshead_t nsHead = {static_cast<unsigned short>(body_len - OFF_SET),static_cast<unsigned short>(body_id),bodyContent,this};
 
 		//收到数据后多态处理
 		chatServer.appendToSerializeList(nsHead);
@@ -154,4 +148,61 @@ void ClientSession::restHeartbeat()
 boostNet::tcp::socket& ClientSession::getSocket()
 {
 	return mSocket;
+}
+
+//发送消息
+void ClientSession::sendMsgBySid(google::protobuf::Message *msg,unsigned short cmd)
+{
+    
+    if(msg == NULL) return;
+    
+    int bodyLen = msg->ByteSize();
+    
+    //消息体
+    char byteArray[bodyLen];
+    memset(&byteArray,'\0',bodyLen);
+    
+    ZeroCopyOutputStream* raw_output = new ArrayOutputStream(byteArray, msg->ByteSize() + 1);
+    CodedOutputStream* code_output = new CodedOutputStream(raw_output);
+    
+    if(!msg->SerializeToCodedStream(code_output))
+    {
+        cout << "Fault to Serialize msg data" << endl;
+        return;
+    }
+    
+    //消息长度
+    unsigned short packetLen = msg->ByteSize() + OFF_SET;
+    
+    //网络传输包
+    char netBuffs[MAX_NET_LEN];
+    memset(netBuffs,'\0',sizeof(netBuffs));
+    
+    //包指针
+    char* pBuffs = netBuffs;
+    
+    //写入包长
+    memcpy(pBuffs, &packetLen, sizeof(short));
+    
+    //偏移指针
+    pBuffs += sizeof(short);
+    
+    //写包ID
+    memcpy(pBuffs,&cmd,sizeof(cmd));
+    
+    //偏移指针
+    pBuffs += sizeof(short);
+    
+    //写入包体
+    memcpy(pBuffs,byteArray,msg->ByteSize());
+    
+    mSocket.async_write_some(boost::asio::buffer(&netBuffs,sizeof(netBuffs)),
+                             boost::bind(&ClientSession::sendComplete,shared_from_this(),boost::asio::placeholders::error,byteArray));
+    
+    cout << "send buff size :" << msg->ByteSize() << endl;
+}
+
+void ClientSession::sendComplete(const boost::system::error_code& error,char* buffs)
+{
+    cout << "send: " << buffs << endl;
 }

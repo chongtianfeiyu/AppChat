@@ -2,6 +2,7 @@
 #include "NetResponse.h"
 #include "SERVER_IO.h"
 #include "ClientSession.h"
+#include "protocbuff/chatMsg.pb.h"
 #include <boost/lexical_cast.hpp>
 
 using namespace response;
@@ -51,7 +52,6 @@ void ChatServer::stop()
         tm.cancel();
         time_io_service.stop();
     }
-
 }
 
 //开始监听客户端连接进入
@@ -68,6 +68,12 @@ void ChatServer::acceptHandler(const boost::system::error_code& error,session_pt
 
 	//启动Session
 	session->start();
+    
+    protocol::dialogMsg* pDialog = new protocol::dialogMsg();
+    pDialog->set_dialogstr("hello welcomplete");
+    
+    //接收到联接请求后发送的一个聊天包给客户端通知联接成功
+    session->sendMsgBySid(pDialog,protocol::XYID_DIALOG);
 
 	//添加有session队列中
 	sessionList.push_back(session);
@@ -88,7 +94,7 @@ void ChatServer::appendToSerializeList(nshead_t netBody)
 	}
 	else
 	{
-		cout << "response fault" << netBody.body_id << endl;
+		cout << "response fault " << netBody.body_id << endl;
 	}
 }
 
@@ -120,9 +126,8 @@ void ChatServer::intervalHandler(const boost::system::error_code& error)
 			}
 		}
 	}
+    //cout << "run heart hand" << endl;
     
-    cout << "run heart hand" << endl;
-
 	//每隔5秒回调一次
 	tm.expires_from_now(boost::posix_time::seconds(5));
 	tm.async_wait(boost::bind(&ChatServer::intervalHandler,this,boost::asio::placeholders::error));
@@ -169,3 +174,32 @@ bool ChatServer::disableSession(const string& sid)
 	}
 	return false;
 }
+
+
+//根据session返回一个session对像
+ClientSession* ChatServer::findSessionByID(const string& sid)
+{
+    vector<session_ptr>::iterator it;
+    for(it = sessionList.begin(); it != sessionList.end(); it++)
+    {
+        const ClientSession* pcs = it->get();
+        if(pcs->sessionID == sid)
+        {
+            return it->get();
+        }
+    }
+    return NULL;
+}
+
+//根据sessiondID 发送相关的数据协议
+void ChatServer::sendMsgBySid(const string& sid,google::protobuf::Message* msg,unsigned short cmd)
+{
+    ClientSession* pclientSession = findSessionByID(sid);
+    if(pclientSession != NULL)
+    {
+        pclientSession->sendMsgBySid(msg,cmd);
+    }
+}
+
+
+

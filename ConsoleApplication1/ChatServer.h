@@ -8,6 +8,11 @@
 #include "ClientSession.h"
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
+#include <google/protobuf/io/zero_copy_stream_impl.h>
+#include <google/protobuf/io/zero_copy_stream.h>
+#include <google/protobuf/io/coded_stream.h>
+
+using namespace google::protobuf::io;
 
 using namespace std;
 using namespace boost;
@@ -35,8 +40,21 @@ public:
 
 	//关闭一个session
 	bool disableSession(const string& sid);
-
-
+    
+    //根据sid发送一条信息
+    void sendMsgBySid(const string& sid,google::protobuf::Message* msg,unsigned short cmd);
+    
+    //根据sid获取返回一个 session指针对像
+    ClientSession* findSessionByID(const string& sid);
+    
+    
+    //返回当前连接上的客户端列表
+    inline vector<session_ptr>& getSessionList() const
+    {
+        return sessionList;
+    }
+    
+    
 private:
 	void acceptHandler(const boost::system::error_code& error,session_ptr& session);		//开始接收客户端
 private :

@@ -10,6 +10,8 @@ enum XY_ID
     XYID_LOGIN              = 10001;
     XYID_DIALOG             = 10002;
 	XYID_HEART				= 10003;
+    XYID_LOGOUT             = 10004;
+    XIYD_THREE_EEROR        = 10005;
 
     MAX_XY_ID = 15000;
 }
@@ -33,4 +35,20 @@ message dialogMsg
 message heartCmd
 {
 	optional XY_ID XYID			= 1 [default = XYID_HEART];
+}
+
+//登出
+message logOut
+{
+    optional XY_ID XYID         = 1 [default = XYID_LOGOUT]
+}
+
+//抛出异常
+message errorMsg
+{
+    //协议ID
+    optional XY_ID XYID         = 1 [default = XIYD_THREE_EEROR]
+    optional int error_code     = 2;    //错误编号
+    optional int error_type     = 3;    //错误类型
+    optional string error_msg   = 4;    //抛出的错误内容
 }

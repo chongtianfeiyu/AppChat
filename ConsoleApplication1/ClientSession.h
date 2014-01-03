@@ -14,6 +14,12 @@
 #include <boost/asio.hpp>
 #include <boost/asio/io_service.hpp>
 #include <boost/bind.hpp>
+#include <google/protobuf/message.h>
+#include <google/protobuf/io/zero_copy_stream.h>
+#include <google/protobuf/io/zero_copy_stream_impl.h>
+#include <google/protobuf/io/coded_stream.h>
+
+using namespace google::protobuf::io;
 
 using std::string;
 using std::fstream;
@@ -39,7 +45,6 @@ public:
 	void start();				//开始				
 	void disconnect();			//断开				
 	bool isOpen();				//验证是否是连接状态				
-	void sendMsg();				//发送消体				
 	void receiverMsg();			//接收消息				
 	void receiverHandler(const boost::system::error_code& error,char* headBuff);					//读取包头成功
 	/*获取当前的通信管道Socket*/
@@ -49,7 +54,12 @@ public:
 	/*确认心跳丢失后的处理*/
 	void loseHeartHandler();
 	//收到心跳后处理
-	void heartHandler();	
+	void heartHandler();
+    
+    void sendMsgBySid(google::protobuf::Message* msg,unsigned short cmd);
+    
+    //发送数据完成后处理
+    void sendComplete(const boost::system::error_code& error,char* buffs);
 
 public :
 	/*是否有存在心跳标记*/
