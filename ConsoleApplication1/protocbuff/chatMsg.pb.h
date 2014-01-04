@@ -37,12 +37,16 @@ void protobuf_ShutdownFile_chatMsg_2eproto();
 class loginServer;
 class dialogMsg;
 class heartCmd;
+class logOut;
+class errorMsg;
 
 enum XY_ID {
   MIN_XY_ID = 10000,
   XYID_LOGIN = 10001,
   XYID_DIALOG = 10002,
   XYID_HEART = 10003,
+  XYID_LOGOUT = 10004,
+  XIYD_THREE_EEROR = 10005,
   MAX_XY_ID = 15000
 };
 bool XY_ID_IsValid(int value);
@@ -336,6 +340,205 @@ class heartCmd : public ::google::protobuf::Message {
   void InitAsDefaultInstance();
   static heartCmd* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class logOut : public ::google::protobuf::Message {
+ public:
+  logOut();
+  virtual ~logOut();
+
+  logOut(const logOut& from);
+
+  inline logOut& operator=(const logOut& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const logOut& default_instance();
+
+  void Swap(logOut* other);
+
+  // implements Message ----------------------------------------------
+
+  logOut* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const logOut& from);
+  void MergeFrom(const logOut& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .protocol.XY_ID XYID = 1 [default = XYID_LOGOUT];
+  inline bool has_xyid() const;
+  inline void clear_xyid();
+  static const int kXYIDFieldNumber = 1;
+  inline ::protocol::XY_ID xyid() const;
+  inline void set_xyid(::protocol::XY_ID value);
+
+  // @@protoc_insertion_point(class_scope:protocol.logOut)
+ private:
+  inline void set_has_xyid();
+  inline void clear_has_xyid();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  int xyid_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+
+  friend void  protobuf_AddDesc_chatMsg_2eproto();
+  friend void protobuf_AssignDesc_chatMsg_2eproto();
+  friend void protobuf_ShutdownFile_chatMsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static logOut* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class errorMsg : public ::google::protobuf::Message {
+ public:
+  errorMsg();
+  virtual ~errorMsg();
+
+  errorMsg(const errorMsg& from);
+
+  inline errorMsg& operator=(const errorMsg& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const errorMsg& default_instance();
+
+  void Swap(errorMsg* other);
+
+  // implements Message ----------------------------------------------
+
+  errorMsg* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const errorMsg& from);
+  void MergeFrom(const errorMsg& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .protocol.XY_ID XYID = 1 [default = XIYD_THREE_EEROR];
+  inline bool has_xyid() const;
+  inline void clear_xyid();
+  static const int kXYIDFieldNumber = 1;
+  inline ::protocol::XY_ID xyid() const;
+  inline void set_xyid(::protocol::XY_ID value);
+
+  // optional int32 error_code = 2;
+  inline bool has_error_code() const;
+  inline void clear_error_code();
+  static const int kErrorCodeFieldNumber = 2;
+  inline ::google::protobuf::int32 error_code() const;
+  inline void set_error_code(::google::protobuf::int32 value);
+
+  // optional int32 error_type = 3;
+  inline bool has_error_type() const;
+  inline void clear_error_type();
+  static const int kErrorTypeFieldNumber = 3;
+  inline ::google::protobuf::int32 error_type() const;
+  inline void set_error_type(::google::protobuf::int32 value);
+
+  // optional string error_msg = 4;
+  inline bool has_error_msg() const;
+  inline void clear_error_msg();
+  static const int kErrorMsgFieldNumber = 4;
+  inline const ::std::string& error_msg() const;
+  inline void set_error_msg(const ::std::string& value);
+  inline void set_error_msg(const char* value);
+  inline void set_error_msg(const char* value, size_t size);
+  inline ::std::string* mutable_error_msg();
+  inline ::std::string* release_error_msg();
+  inline void set_allocated_error_msg(::std::string* error_msg);
+
+  // @@protoc_insertion_point(class_scope:protocol.errorMsg)
+ private:
+  inline void set_has_xyid();
+  inline void clear_has_xyid();
+  inline void set_has_error_code();
+  inline void clear_has_error_code();
+  inline void set_has_error_type();
+  inline void clear_has_error_type();
+  inline void set_has_error_msg();
+  inline void clear_has_error_msg();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  int xyid_;
+  ::google::protobuf::int32 error_code_;
+  ::std::string* error_msg_;
+  ::google::protobuf::int32 error_type_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+
+  friend void  protobuf_AddDesc_chatMsg_2eproto();
+  friend void protobuf_AssignDesc_chatMsg_2eproto();
+  friend void protobuf_ShutdownFile_chatMsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static errorMsg* default_instance_;
+};
 // ===================================================================
 
 
@@ -558,6 +761,174 @@ inline void heartCmd::set_xyid(::protocol::XY_ID value) {
   assert(::protocol::XY_ID_IsValid(value));
   set_has_xyid();
   xyid_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// logOut
+
+// optional .protocol.XY_ID XYID = 1 [default = XYID_LOGOUT];
+inline bool logOut::has_xyid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void logOut::set_has_xyid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void logOut::clear_has_xyid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void logOut::clear_xyid() {
+  xyid_ = 10004;
+  clear_has_xyid();
+}
+inline ::protocol::XY_ID logOut::xyid() const {
+  return static_cast< ::protocol::XY_ID >(xyid_);
+}
+inline void logOut::set_xyid(::protocol::XY_ID value) {
+  assert(::protocol::XY_ID_IsValid(value));
+  set_has_xyid();
+  xyid_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// errorMsg
+
+// optional .protocol.XY_ID XYID = 1 [default = XIYD_THREE_EEROR];
+inline bool errorMsg::has_xyid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void errorMsg::set_has_xyid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void errorMsg::clear_has_xyid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void errorMsg::clear_xyid() {
+  xyid_ = 10005;
+  clear_has_xyid();
+}
+inline ::protocol::XY_ID errorMsg::xyid() const {
+  return static_cast< ::protocol::XY_ID >(xyid_);
+}
+inline void errorMsg::set_xyid(::protocol::XY_ID value) {
+  assert(::protocol::XY_ID_IsValid(value));
+  set_has_xyid();
+  xyid_ = value;
+}
+
+// optional int32 error_code = 2;
+inline bool errorMsg::has_error_code() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void errorMsg::set_has_error_code() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void errorMsg::clear_has_error_code() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void errorMsg::clear_error_code() {
+  error_code_ = 0;
+  clear_has_error_code();
+}
+inline ::google::protobuf::int32 errorMsg::error_code() const {
+  return error_code_;
+}
+inline void errorMsg::set_error_code(::google::protobuf::int32 value) {
+  set_has_error_code();
+  error_code_ = value;
+}
+
+// optional int32 error_type = 3;
+inline bool errorMsg::has_error_type() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void errorMsg::set_has_error_type() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void errorMsg::clear_has_error_type() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void errorMsg::clear_error_type() {
+  error_type_ = 0;
+  clear_has_error_type();
+}
+inline ::google::protobuf::int32 errorMsg::error_type() const {
+  return error_type_;
+}
+inline void errorMsg::set_error_type(::google::protobuf::int32 value) {
+  set_has_error_type();
+  error_type_ = value;
+}
+
+// optional string error_msg = 4;
+inline bool errorMsg::has_error_msg() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void errorMsg::set_has_error_msg() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void errorMsg::clear_has_error_msg() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void errorMsg::clear_error_msg() {
+  if (error_msg_ != &::google::protobuf::internal::kEmptyString) {
+    error_msg_->clear();
+  }
+  clear_has_error_msg();
+}
+inline const ::std::string& errorMsg::error_msg() const {
+  return *error_msg_;
+}
+inline void errorMsg::set_error_msg(const ::std::string& value) {
+  set_has_error_msg();
+  if (error_msg_ == &::google::protobuf::internal::kEmptyString) {
+    error_msg_ = new ::std::string;
+  }
+  error_msg_->assign(value);
+}
+inline void errorMsg::set_error_msg(const char* value) {
+  set_has_error_msg();
+  if (error_msg_ == &::google::protobuf::internal::kEmptyString) {
+    error_msg_ = new ::std::string;
+  }
+  error_msg_->assign(value);
+}
+inline void errorMsg::set_error_msg(const char* value, size_t size) {
+  set_has_error_msg();
+  if (error_msg_ == &::google::protobuf::internal::kEmptyString) {
+    error_msg_ = new ::std::string;
+  }
+  error_msg_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* errorMsg::mutable_error_msg() {
+  set_has_error_msg();
+  if (error_msg_ == &::google::protobuf::internal::kEmptyString) {
+    error_msg_ = new ::std::string;
+  }
+  return error_msg_;
+}
+inline ::std::string* errorMsg::release_error_msg() {
+  clear_has_error_msg();
+  if (error_msg_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = error_msg_;
+    error_msg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void errorMsg::set_allocated_error_msg(::std::string* error_msg) {
+  if (error_msg_ != &::google::protobuf::internal::kEmptyString) {
+    delete error_msg_;
+  }
+  if (error_msg) {
+    set_has_error_msg();
+    error_msg_ = error_msg;
+  } else {
+    clear_has_error_msg();
+    error_msg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
 }
 
 

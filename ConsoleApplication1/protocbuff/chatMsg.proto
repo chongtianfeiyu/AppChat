@@ -21,7 +21,7 @@ enum XY_ID
 message loginServer
 {
    optional XY_ID XYID          = 1 [default = XYID_LOGIN];
-   optional string userID		= 2;    //登录名
+   optional string userID	= 2;    //登录名
 }
 
 //聊天内容
@@ -34,21 +34,21 @@ message dialogMsg
 //心跳包
 message heartCmd
 {
-	optional XY_ID XYID			= 1 [default = XYID_HEART];
+	optional XY_ID XYID	= 1 [default = XYID_HEART];
 }
 
 //登出
 message logOut
 {
-    optional XY_ID XYID         = 1 [default = XYID_LOGOUT]
+    optional XY_ID XYID         = 1 [default = XYID_LOGOUT];
 }
 
 //抛出异常
 message errorMsg
 {
     //协议ID
-    optional XY_ID XYID         = 1 [default = XIYD_THREE_EEROR]
-    optional int error_code     = 2;    //错误编号
-    optional int error_type     = 3;    //错误类型
+    optional XY_ID XYID         = 1 [default = XIYD_THREE_EEROR];
+    optional int32 error_code     = 2;    //错误编号
+    optional int32 error_type     = 3;    //错误类型
     optional string error_msg   = 4;    //抛出的错误内容
 }

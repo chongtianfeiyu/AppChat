@@ -88,7 +88,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetResponse.cpp" />
     <ClCompile Include="protocbuff\chatMsg.pb.cc" />
-    <ClCompile Include="UTF_8CPP.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChatServer.h" />
