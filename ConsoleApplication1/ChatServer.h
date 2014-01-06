@@ -49,7 +49,7 @@ public:
     
     
     //返回当前连接上的客户端列表
-    inline vector<session_ptr>& getSessionList() const
+    inline vector<session_ptr> getSessionList() const
     {
         return sessionList;
     }

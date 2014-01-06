@@ -26,7 +26,7 @@ void response::loginServer_response(nshead_t& nshead)
     
     //char buffs[MAX_NET_LEN];
     memset(buffs,'\0',MAX_NET_LEN);
-    strcpy(buffs,nshead.body_content);
+    memcpy(buffs,nshead.body_content,sizeof(nshead.body_content) + 1);
     
 	logSvr->ParseFromArray(buffs,MAX_NET_LEN);
     const string& userID = logSvr->userid();
@@ -37,10 +37,18 @@ void response::loginServer_response(nshead_t& nshead)
     
     if(chatServer.validateExistSession(userID))
 	{
+        //发送消怎提示
+        protocol::errorMsg* pErrorMsg = new protocol::errorMsg();
+        
+        pErrorMsg->set_error_code(10001);
+        pErrorMsg->set_error_msg("你的账号已在别处登录");
+        
+        pSession->sendMsgBySid(pErrorMsg,protocol::XIYD_THREE_EEROR);
+        
 		//把原来的连接挤下线
 		chatServer.disableSession(userID);
 	}
-	((ClientSession*)nshead.clientSession)->sessionID = logSvr->userid();
+    pSession->sessionID = logSvr->userid();
 }
 
 
@@ -50,7 +58,7 @@ void response::chat_progress(nshead_t& nshead)
     ClientSession* pSession = static_cast<ClientSession*>(nshead.clientSession);
     
     memset(buffs,'\0',MAX_NET_LEN);
-    strcpy(buffs,nshead.body_content);
+    memcpy(buffs,nshead.body_content,sizeof(nshead.body_content) + 1);
     
     protocol::dialogMsg* dialogMsg = new protocol::dialogMsg();
     dialogMsg->ParseFromArray(buffs,sizeof(buffs));
@@ -70,3 +78,17 @@ void response::chat_progress(nshead_t& nshead)
     }
 }
 
+//登出处理
+void response::logout(nshead_t& nshead)
+{
+    ClientSession* pSession = static_cast<ClientSession*> (nshead.clientSession);
+    
+    memset(buffs,'\0',MAX_NET_LEN);
+    strcpy(buffs,nshead.body_content);
+    
+    protocol::logOut* logoutMsg = new protocol::logOut();
+    pSession->sendMsgBySid(logoutMsg,protocol::XYID_LOGOUT);
+    
+    string& ssid = pSession->sessionID;
+    chatServer.disableSession(ssid);
+}

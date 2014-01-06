@@ -79,30 +79,34 @@ void ClientSession::receiverHandler(const boost::system::error_code& error,char*
 		cout << "receiver error: " << error.message() << endl;
 		//接收下条数据
 		//receiverMsg();
+        mSocket.close();
 		return;
 	}
-
-	//包长
+    
+    //包长
 	short body_len = *(unsigned short*)headBuff;
 	headBuff += sizeof(short);
 
 	//包ID
 	short body_id = *(unsigned short*)headBuff;
 	headBuff += sizeof(short);
-
-	if(body_id == protocol::XYID_HEART)
+    
+    //数据包内容
+    char bodyContent[MAX_NET_LEN];
+    memset(bodyContent,'\0',MAX_NET_LEN);
+    memcpy(bodyContent, headBuff, sizeof(headBuff) + 1);
+    //复位字节流的指针
+    char* bodybuff = bodyContent;
+        
+    if(body_id == protocol::XYID_HEART)
 	{
 		//标记当前心跳有效
 		heartHandler();
 	}
 	else
 	{
-		char bodyContent[MAX_NET_LEN];
-		memset(bodyContent,'\0',sizeof(bodyContent));
-		strcpy(bodyContent,headBuff);
-
 		//包头
-		nshead_t nsHead = {static_cast<unsigned short>(body_len - OFF_SET),static_cast<unsigned short>(body_id),bodyContent,this};
+		nshead_t nsHead = {static_cast<unsigned short>(body_len - OFF_SET),static_cast<unsigned short>(body_id),(char*)bodybuff,this};
 
 		//收到数据后多态处理
 		chatServer.appendToSerializeList(nsHead);
@@ -194,12 +198,12 @@ void ClientSession::sendMsgBySid(google::protobuf::Message *msg,unsigned short c
     pBuffs += sizeof(short);
     
     //写入包体
-    memcpy(pBuffs,byteArray,msg->ByteSize());
+    memcpy(pBuffs,byteArray,msg->ByteSize() + 1);
     
     mSocket.async_write_some(boost::asio::buffer(&netBuffs,sizeof(netBuffs)),
                              boost::bind(&ClientSession::sendComplete,shared_from_this(),boost::asio::placeholders::error,byteArray));
     
-    cout << "send buff size :" << msg->ByteSize() << endl;
+    //cout << "send buff size :" << msg->ByteSize() << endl;
 }
 
 void ClientSession::sendComplete(const boost::system::error_code& error,char* buffs)

@@ -24,6 +24,8 @@ namespace response
     //接收到聊天内容处理
     void chat_progress(nshead_t& nshead);
 
+    //登出处理  
+    void logout(nshead_t& nshead);
 }
 #endif
 

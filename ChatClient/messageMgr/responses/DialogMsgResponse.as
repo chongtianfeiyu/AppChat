@@ -1,25 +1,1 @@
-package messageMgr.responses
-{
-	import com.netease.protobuf.Message;
-	
-	import messageMgr.NetResponseBase;
-	
-	/**
-	 * 聊天内容协议 
-	 * @author taojiang
-	 * 
-	 */	
-	public class DialogMsgResponse extends NetResponseBase
-	{
-		public function DialogMsgResponse()
-		{
-			super();
-		}
-		
-		public override function onResult(msg:Message):void
-		{
-			trace(msg.toString());
-		}
-		
-	}
-}
+﻿package messageMgr.responses{	import com.netease.protobuf.Message;		import messageMgr.NetResponseBase;	import protocol.dialogMsg;		/**	 * 聊天内容协议 	 * @author taojiang	 * 	 */		public class DialogMsgResponse extends NetResponseBase	{		public function DialogMsgResponse()		{			super();		}				public override function onResult(msg:Message):void		{			var dialog:dialogMsg = dialogMsg(msg);			if(dialog)			{				var msgStr:String = "receiver: " + dialog.dialogStr;				SharedObject.mainUI.appendMsgByStruct(msgStr);			}		}			}}

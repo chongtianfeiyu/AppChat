@@ -126,7 +126,7 @@ void ChatServer::intervalHandler(const boost::system::error_code& error)
 			}
 		}
 	}
-    //cout << "run heart hand" << endl;
+    cout << "run heart hand" << endl;
     
 	//每隔5秒回调一次
 	tm.expires_from_now(boost::posix_time::seconds(5));
@@ -137,6 +137,10 @@ void ChatServer::intervalHandler(const boost::system::error_code& error)
 //检查是否有相同的会话建立联接，比如同样的账号进行登录检查
 bool ChatServer::validateExistSession(const string& sid)
 {
+    
+    int user_size = static_cast<int>(sid.length());
+    if(user_size == 0) return false;
+    
 	bool res = false;
 	vector<session_ptr>::iterator it;
 	for(it = sessionList.begin(); it != sessionList.end(); it++)

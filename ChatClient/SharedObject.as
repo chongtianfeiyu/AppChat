@@ -1,0 +1,1 @@
+﻿package  {		public class SharedObject {		public static var mainUI:ChatClient = null;		public function SharedObject() 		{			// constructor code		}	}	}
