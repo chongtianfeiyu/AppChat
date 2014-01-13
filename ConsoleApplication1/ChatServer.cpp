@@ -4,14 +4,22 @@
 #include "ClientSession.h"
 #include "protocbuff/chatMsg.pb.h"
 #include <boost/lexical_cast.hpp>
+#include <boost/thread.hpp>
+
 
 using namespace response;
 
+boost::mutex mu;
+boost::thread intervalThread;
+
+
+
 //聊天服务程序，这里有一个异步计时器功能，每隔5秒会检测一次失去心跳的连接，然后记录做剔除处理.
-ChatServer::ChatServer(void):tm(time_io_service)
+ChatServer::ChatServer(void)
 {
 	//观察客户端登录数据
 	response::callBackMap.insert(make_pair(protocol::XYID_LOGIN,&response::loginServer_response));
+    
 }
 
 ChatServer::~ChatServer(void)
@@ -26,11 +34,8 @@ void ChatServer::start()
 
     if(!APP_IS_DEBUG)
     {
-        //开始心跳计时
-        tm.expires_from_now(boost::posix_time::seconds(5));
-        tm.async_wait(boost::bind(&ChatServer::intervalHandler,this,boost::asio::placeholders::error));
-        
-        time_io_service.run();
+        //启动线程计时器异步处理
+        intervalThread = boost::thread(boost::bind(&ChatServer::intervalHandler,this));
     }
 }
 
@@ -48,9 +53,8 @@ void ChatServer::stop()
 
     if(!APP_IS_DEBUG)
     {
-        //停止心跳计时
-        tm.cancel();
-        time_io_service.stop();
+        //中断计时器线程
+        intervalThread.interrupt();
     }
 }
 
@@ -99,38 +103,35 @@ void ChatServer::appendToSerializeList(nshead_t netBody)
 }
 
 //异步计时调回处理。每隔5秒回调一次
-void ChatServer::intervalHandler(const boost::system::error_code& error)
+void ChatServer::intervalHandler()
 {
-	if(error)
-	{
-		cout << error.message() << endl;
-		return;
-	}
-
-	vector<session_ptr>::iterator it;
-	for(it = sessionList.begin(); it != sessionList.end();)
-	{
-		session_ptr tmp_ptr = (session_ptr)*it;
-		if(!tmp_ptr->heartValid)
-		{
-			tmp_ptr->loseHeartHandler();
-			int max_out = MAX_HEART_OUT;
-			if(tmp_ptr->loseheart >= max_out)
-			{
-				it = sessionList.erase(it);
-				cout << "clear session" << endl;
-			}
-			else
-			{
-				it++;
-			}
-		}
-	}
-    cout << "run heart hand" << endl;
     
-	//每隔5秒回调一次
-	tm.expires_from_now(boost::posix_time::seconds(5));
-	tm.async_wait(boost::bind(&ChatServer::intervalHandler,this,boost::asio::placeholders::error));
+    while(true)
+    {
+        sleep(5);
+        vector<session_ptr>::iterator it;
+        for(it = sessionList.begin(); it != sessionList.end();)
+        {
+            session_ptr tmp_ptr = (session_ptr)*it;
+            if(!tmp_ptr->heartValid)
+            {
+                tmp_ptr->loseHeartHandler();
+                int max_out = MAX_HEART_OUT;
+                if(tmp_ptr->loseheart >= max_out)
+                {
+                    it = sessionList.erase(it);
+                    cout << "clear session" << endl;
+                }
+                else
+                {
+                    it++;
+                }
+            }
+        }
+        mu.lock();
+        cout << "run heart hand" << endl;
+        mu.unlock();
+    }
 }
 
 
@@ -158,6 +159,7 @@ bool ChatServer::validateExistSession(const string& sid)
 //根据sessionID断开一个会话
 bool ChatServer::disableSession(const string& sid)
 {
+    
 	bool res = false;
 	vector<session_ptr>::iterator it;
 	for(it = sessionList.begin(); it != sessionList.end();)

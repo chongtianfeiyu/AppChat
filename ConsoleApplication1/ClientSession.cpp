@@ -9,6 +9,7 @@
 #include <google/protobuf/io/zero_copy_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <google/protobuf/io/coded_stream.h>
+#include <boost/thread.hpp>
 
 #include "SERVER_IO.h"
 
@@ -82,6 +83,8 @@ void ClientSession::receiverHandler(const boost::system::error_code& error,char*
         mSocket.close();
 		return;
 	}
+    
+    //cout << "<<" << headBuff << endl;
     
     //包长
 	short body_len = *(unsigned short*)headBuff;

@@ -13,7 +13,6 @@
 #include <google/protobuf/io/coded_stream.h>
 
 using namespace google::protobuf::io;
-
 using namespace std;
 using namespace boost;
 
@@ -33,7 +32,7 @@ public:
 	void threadSerializedBody();					//线程中解析包体
 
 	//计时器处理回调函数
-	void intervalHandler(const boost::system::error_code& error);
+	void intervalHandler();
 
 	//验证session是否存在
 	bool validateExistSession(const string& sid);
@@ -60,8 +59,8 @@ private:
 private :
 	vector<session_ptr> sessionList;				//客户端连接
 	//计时器IO,用于定时检测心跳连接处理，将失去心跳的session做剔除处理。
-	boost::asio::io_service time_io_service;
-	asio::deadline_timer tm;
+	//boost::asio::io_service time_io_service;
+	//asio::deadline_timer tm;
 };
 
 #endif

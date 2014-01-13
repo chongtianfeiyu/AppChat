@@ -12,6 +12,8 @@
 #include "ChatServer.h"
 #include "ClassFactory.h"
 
+#include <boost/bind.hpp>
+
 using std::cout;
 using std::endl;
 
@@ -35,14 +37,14 @@ boost::asio::ip::tcp::acceptor svrAccept(globalIoSvr,endPoint);
 ChatServer chatServer;
 
 //是否是调试模式
-bool APP_IS_DEBUG = true;
+bool APP_IS_DEBUG = false;
 
 int main(int argc,char* argv[])
 {
 	cout << "chat server start." << endl;
 	chatServer.start();
-	//接收到数据包处理线程
-	//thread serializeThread(boost::bind(&ChatServer::threadSerializedBody,&chatServer));
-	globalIoSvr.run();
+    globalIoSvr.run();
+    //boost::thread th1(bind(&boost::asio::io_service::run,&globalIoSvr));
+    //th1.join();
     return 0;
 }
