@@ -28,7 +28,8 @@ message loginServer
 message dialogMsg
 {
     optional XY_ID XYID         = 1 [default = XYID_DIALOG];
-    optional string dialogStr   = 2;    //聊天内容
+    optional string userName    = 2     //用户名
+    optional string dialogStr   = 3;    //聊天内容
 }
 
 //心跳包

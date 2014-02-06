@@ -19,7 +19,10 @@ ChatServer::ChatServer(void)
 {
 	//观察客户端登录数据
 	response::callBackMap.insert(make_pair(protocol::XYID_LOGIN,&response::loginServer_response));
-    
+    //聊天信息
+    response::callBackMap.insert(make_pair(protocol::XYID_DIALOG,&response::chat_progress));
+    //登出
+    response::callBackMap.insert(make_pair(protocol::XYID_DIALOG,&response::logout));
 }
 
 ChatServer::~ChatServer(void)
