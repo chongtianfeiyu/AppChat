@@ -8,10 +8,7 @@
 
 
 using namespace response;
-
-boost::mutex mu;
 boost::thread intervalThread;
-
 
 
 //聊天服务程序，这里有一个异步计时器功能，每隔5秒会检测一次失去心跳的连接，然后记录做剔除处理.
@@ -77,7 +74,7 @@ void ChatServer::acceptHandler(const boost::system::error_code& error,session_pt
 	session->start();
     
     protocol::dialogMsg* pDialog = new protocol::dialogMsg();
-    pDialog->set_dialogstr("hello welcomplete");
+    pDialog->set_dialogstr("欢迎进入聊天");
     
     //接收到联接请求后发送的一个聊天包给客户端通知联接成功
     session->sendMsgBySid(pDialog,protocol::XYID_DIALOG);
@@ -108,7 +105,6 @@ void ChatServer::appendToSerializeList(nshead_t netBody)
 //异步计时调回处理。每隔5秒回调一次
 void ChatServer::intervalHandler()
 {
-    
     while(true)
     {
         sleep(5);
@@ -131,9 +127,7 @@ void ChatServer::intervalHandler()
                 }
             }
         }
-        mu.lock();
-        cout << "run heart hand" << endl;
-        mu.unlock();
+        //cout << "run heart hand count : " << sessionList.size() << endl;
     }
 }
 

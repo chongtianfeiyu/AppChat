@@ -23,7 +23,6 @@ public:
     virtual ~CodeConvert(void);
     
     int convert(char* inbuf,int inlen,char* outbuf,int outlen);
-    
 };
 
 

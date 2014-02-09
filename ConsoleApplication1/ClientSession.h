@@ -5,7 +5,11 @@
 #define MAX_NET_LEN 4096
 
 //心跳丢失的最大次数限制
-#define MAX_HEART_OUT 3;
+#define MAX_HEART_OUT 3
+
+//socket网络跨跨字符
+//#define SOCKET_POLICY <policy-file-request/>
+//#define SOCKET_POLICY_REQUEST <cross-domain-policy><allow-access-from domain="*" to-ports="*"/></cross-domain-policy>
 
 #include <iostream>
 #include <fstream>

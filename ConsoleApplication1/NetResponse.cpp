@@ -26,9 +26,9 @@ void response::loginServer_response(nshead_t& nshead)
     
     //char buffs[MAX_NET_LEN];
     memset(buffs,'\0',MAX_NET_LEN);
-    memcpy(buffs,nshead.body_content,sizeof(nshead.body_content) + 1);
+    memcpy(buffs,nshead.body_content,nshead.body_len);
     
-	logSvr->ParseFromArray(buffs,MAX_NET_LEN);
+	logSvr->ParseFromArray(buffs,nshead.body_len);
     const string& userID = logSvr->userid();
     
     cout << "userID is " << userID << endl;
@@ -58,11 +58,14 @@ void response::chat_progress(nshead_t& nshead)
     ClientSession* pSession = static_cast<ClientSession*>(nshead.clientSession);
     
     memset(buffs,'\0',MAX_NET_LEN);
-    memcpy(buffs,nshead.body_content,sizeof(nshead.body_content) + 1);
-    
+    memcpy(buffs,nshead.body_content,nshead.body_len);
+        
     protocol::dialogMsg* dialogMsg = new protocol::dialogMsg();
-    dialogMsg->ParseFromArray(buffs,sizeof(buffs));
+    dialogMsg->ParseFromArray(buffs,nshead.body_len);
     
+    cout << dialogMsg->dialogstr() << endl;
+    
+    cout << "parseFromArray" << endl;
     string& ssid = pSession->sessionID;
     
     vector<ChatServer::session_ptr> ssList = chatServer.getSessionList();

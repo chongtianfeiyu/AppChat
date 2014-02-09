@@ -37,7 +37,7 @@ boost::asio::ip::tcp::acceptor svrAccept(globalIoSvr,endPoint);
 ChatServer chatServer;
 
 //是否是调试模式
-bool APP_IS_DEBUG = false;
+bool APP_IS_DEBUG = true;
 
 int main(int argc,char* argv[])
 {
